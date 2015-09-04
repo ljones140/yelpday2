@@ -15,10 +15,23 @@ feature 'reviewing' do
   end
 
 
+  scenario "doesn't allow users to review the same restaurant twice" do
+    sign_up
+    visit '/restaurants'
+    click_link "Review KFC"
+    fill_in 'Thoughts', with: 'So so'
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+    visit '/restaurants'
+    click_link "Review KFC"
+    expect(page).to have_content('You have already reviewed this restaurant')
+  end
+
+
   scenario "doesn't allow users to leave a review when not signed in" do
     visit '/restaurants'
     click_link "Review KFC"
     expect(current_path).to eq '/users/sign_in'
-    expect(page).to have_content('You need to sign in or sign up before continuing.')
+    expect(page).to have_content('You need to sign in or sign up before continuing')
   end
 end
