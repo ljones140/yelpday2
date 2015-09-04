@@ -7,4 +7,6 @@ class Review < ActiveRecord::Base
   validates :user, uniqueness: { scope: :restaurant, message: "has reviewed this restaurant already" }
 
 
+
+
 end
