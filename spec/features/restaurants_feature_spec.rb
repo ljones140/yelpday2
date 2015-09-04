@@ -22,6 +22,7 @@ feature 'restaurants' do
   end
 
   context 'creating restaurants' do
+
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
       sign_up
       visit '/restaurants'
@@ -31,6 +32,15 @@ feature 'restaurants' do
       expect(page).to have_content 'Siv\'s Place'
       expect(current_path).to eq '/restaurants'
     end
+
+    context 'user not logged in' do
+      it 'does not allow restaurant to be created' do
+        visit '/restaurants'
+        click_link 'Add a restaurant'
+        expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      end
+    end
+
 
     context 'an invalid restaurant' do
       it 'does not let you submit a name that is too short' do
