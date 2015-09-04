@@ -70,10 +70,10 @@ feature 'restaurants' do
 
   context 'editing restaurants' do
 
-    before {Restaurant.create name: 'SFC'}
+    before { sign_up_and_create_restaurant }
 
     scenario 'let a user edit a restaurant' do
-      sign_up
+      # sign_up
       visit '/restaurants'
       click_link 'Edit SFC'
       fill_in 'Name', with: "Siv's Fried Chicken"
@@ -81,6 +81,23 @@ feature 'restaurants' do
       expect(page).to have_content "Siv's Fried Chicken"
       expect(current_path).to eq '/restaurants'
     end
+
+    scenario 'do not let a user edit a restaurant which they did not create' do
+      # sign_up
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: "Siv's Place"
+      click_button 'Create Restaurant'
+      switch_to_new_user
+      visit '/restaurants'
+      click_link "Edit Siv's Place"
+      # fill_in 'Name', with: "Siv's Fried Chicken"
+      # click_button 'Update Restaurant'
+      expect(page).to have_content "You cannae editta that capn - it isnt yours to do so"
+      expect(current_path).to eq '/restaurants'
+    end
+
+
   end
 
   context 'deleting restaurants' do

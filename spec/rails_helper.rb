@@ -8,6 +8,9 @@ require 'rspec/rails'
 require 'capybara/rails'
 require_relative './helpers/omniauth_helper'
 require_relative './helpers/sign_up'
+require_relative './helpers/switch_to_new_user'
+require_relative './helpers/sign_up_and_create_restaurant'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
