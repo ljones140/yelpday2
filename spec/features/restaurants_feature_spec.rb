@@ -73,7 +73,6 @@ feature 'restaurants' do
     before { sign_up_and_create_restaurant }
 
     scenario 'let a user edit a restaurant' do
-      # sign_up
       visit '/restaurants'
       click_link 'Edit SFC'
       fill_in 'Name', with: "Siv's Fried Chicken"
@@ -83,7 +82,6 @@ feature 'restaurants' do
     end
 
     scenario 'do not let a user edit a restaurant which they did not create' do
-      # sign_up
       visit '/restaurants'
       click_link 'Add a restaurant'
       fill_in 'Name', with: "Siv's Place"
@@ -91,26 +89,30 @@ feature 'restaurants' do
       switch_to_new_user
       visit '/restaurants'
       click_link "Edit Siv's Place"
-      # fill_in 'Name', with: "Siv's Fried Chicken"
-      # click_button 'Update Restaurant'
       expect(page).to have_content "You cannae editta that capn - it isnt yours to do so"
       expect(current_path).to eq '/restaurants'
     end
-
-
   end
 
   context 'deleting restaurants' do
 
-    before {Restaurant.create name: 'TFC'}
+    before { sign_up_and_create_restaurant }
 
     scenario 'removes a restaurant when a user clicks a delete link' do
-      sign_up
       visit '/restaurants'
-      click_link 'Delete TFC'
-      expect(page).not_to have_content 'TFC'
+      click_link 'Delete SFC'
+      expect(page).not_to have_content 'SFC'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
+
+    scenario 'do not let a user delete a restaurant which they did not create' do
+      switch_to_new_user
+      visit '/restaurants'
+      click_link "Delete SFC"
+      expect(page).to have_content "You cannae deltitta that capn - it isnt yours to do so"
+      expect(current_path).to eq '/restaurants'
+    end
+
   end
 
 end
